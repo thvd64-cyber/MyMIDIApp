@@ -1,19 +1,22 @@
-// ======================= APP INIT MET INPUT =======================
+// ======================= APP MET ENGINE =======================
+
+import SwiftUI
 
 @main
 struct MyMIDIApp: App {
 
-    let midiService = MIDIService() // CoreMIDI service
+    let midiService = MIDIService() // CoreMIDI
+    let engine: MIDIEngine          // Centrale engine
 
     init() {
-        midiService.startListening { event in
-            print("Incoming MIDI: \(event)") // Debug input
-        }
+        engine = MIDIEngine(midiService: midiService) 
+        // Koppel alles aan elkaar
     }
 
     var body: some Scene {
         WindowGroup {
-            KnobView(viewModel: KnobViewModel(midiService: midiService))
+            KnobView(viewModel: KnobViewModel(engine: engine))
+            // Inject engine
         }
     }
 }
